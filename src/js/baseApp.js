@@ -1,6 +1,6 @@
 //Common base class for web apps
 
-import * as SceneConfig from "./sceneConfig";
+import { SceneConfig } from "./sceneConfig";
 import * as THREE from "three";
 //import * as TrackballControls from "three-trackballcontrols";
 let TrackballControls = require("three-trackballcontrols");
@@ -188,8 +188,7 @@ export class BaseApp {
 
         this.controls.keys = [ 65, 83, 68 ];
 
-        const LOOK_X = 0, LOOK_Y = 0, LOOK_Z = 0;
-        let lookAt = new THREE.Vector3(LOOK_X, LOOK_Y, LOOK_Z);
+        let lookAt = new THREE.Vector3(SceneConfig.LookAtPos.x, SceneConfig.LookAtPos.y, SceneConfig.LookAtPos.z);
         this.controls.target.copy(lookAt);
     }
 

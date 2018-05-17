@@ -1,17 +1,33 @@
 // General parameters to help with setting up scene
 
-const clearColour = 0x5c5f64;
-const ambientLightColour = 0x383838;
-const pointLightColour = 0xffffff;
-const CameraPos = {
-    x: 0,
-    y: 0,
-    z: 200
+const SceneConfig = {
+    clearColour: 0x5c5f64,
+    ambientLightColour: 0x383838,
+    pointLightColour: 0xffffff,
+    CameraPos: {
+        x: 230,
+        y: 180,
+        z: 430
+    },
+    LookAtPos: {
+        x: 0,
+        y: 0,
+        z: 0
+    },
+    NEAR_PLANE: 0.1,
+    FAR_PLANE: 10000,
+    FOV: 45,
+    radius: 5,
+    winHeight: 15,
+    winColour: 0x00ff00,
+    teamStart: {
+        x: 0,
+        y: 15/2,
+        z: -250
+    },
+    teamInc: 12,
+    //Options
+    SEASONS: "seasonsOption"
 };
-const NEAR_PLANE = 0.1;
-const FAR_PLANE = 10000;
-const FOV = 45;
-//Options
-const SEASONS = "seasonsOption";
 
-export { clearColour, ambientLightColour, pointLightColour, CameraPos, NEAR_PLANE, FAR_PLANE, FOV, SEASONS };
+export { SceneConfig };

@@ -6,8 +6,9 @@ import $ from "jquery";
 //window.$ = $;
 import * as THREE from "three";
 import { BaseApp } from "./baseApp";
-import * as SceneConfig from "./sceneConfig";
-//import * as ControlKit from "controlkit";
+import { SceneConfig } from "./sceneConfig";
+import Data from "../data/forest.json";
+
 let ControlKit = require("controlkit");
 
 class Framework extends BaseApp {
@@ -36,10 +37,18 @@ class Framework extends BaseApp {
         //Add ground plane
         this.addGround();
 
-        let geom = new THREE.BoxBufferGeometry(30, 30, 30, 8, 8);
-        let mat = new THREE.MeshLambertMaterial({color: 0xff0000});
-        let mesh = new THREE.Mesh(geom, mat);
-        this.root.add(mesh);
+        let teamGeom = new THREE.CylinderBufferGeometry(SceneConfig.radius, SceneConfig.radius, SceneConfig.winHeight);
+        let teamMats = new THREE.MeshLambertMaterial({color: SceneConfig.winColour});
+        let teamMesh;
+        let teamPosition = SceneConfig.teamStart;
+        for(let i=0, numMatches=Data.length; i<numMatches; ++i) {
+            teamMesh = new THREE.Mesh(teamGeom, teamMats);
+            teamMesh.position.set(teamPosition.x, teamPosition.y, teamPosition.z + (SceneConfig.teamInc * i));
+            this.root.add(teamMesh);
+        }
+
+        //DEBUG
+        //console.log("Forest data = ", Data);
     }
 
     createGUI() {
@@ -144,7 +153,5 @@ $(document).ready( () => {
         app.showSeason("season2018");
         app.refresh();
     });
-
-    app.run();
 
 });
