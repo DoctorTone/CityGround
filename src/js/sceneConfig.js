@@ -18,7 +18,9 @@ const SceneConfig = {
     FAR_PLANE: 10000,
     FOV: 45,
     radius: 5,
-    winHeight: 15,
+    winHeight: 45,
+    drawHeight: 30,
+    loseHeight: 15,
     winColour: 0x00ff00,
     drawColour: 0xffbf00,
     loseColour: 0xff0000,
@@ -29,6 +31,7 @@ const SceneConfig = {
     },
     teamInc: 12,
     RESULT: 6,
+    resultOffset: [40, 20, 0],
     //Options
     SEASONS: "seasonsOption"
 };

@@ -38,9 +38,9 @@ class Framework extends BaseApp {
         this.addGround();
 
         let teamGeom = new THREE.CylinderBufferGeometry(SceneConfig.radius, SceneConfig.radius, SceneConfig.winHeight);
-        let teamMats = [new THREE.MeshLambertMaterial({color: SceneConfig.winColour}),
+        let teamMats = [new THREE.MeshLambertMaterial({color: SceneConfig.loseColour}),
             new THREE.MeshLambertMaterial({color: SceneConfig.drawColour}),
-            new THREE.MeshLambertMaterial({color: SceneConfig.loseColour})];
+            new THREE.MeshLambertMaterial({color: SceneConfig.winColour})];
         let teamMesh;
         let teamPosition = SceneConfig.teamStart;
         let team, result;
@@ -52,7 +52,7 @@ class Framework extends BaseApp {
                 continue;
             }
             teamMesh = new THREE.Mesh(teamGeom, teamMats[result]);
-            teamMesh.position.set(teamPosition.x, teamPosition.y, teamPosition.z + (SceneConfig.teamInc * i));
+            teamMesh.position.set(teamPosition.x, SceneConfig.winHeight/2 - SceneConfig.resultOffset[result], teamPosition.z + (SceneConfig.teamInc * i));
             this.root.add(teamMesh);
         }
 
@@ -65,13 +65,13 @@ class Framework extends BaseApp {
         let result = team[SceneConfig.RESULT];
         switch (result) {
             case "W":
-                result = 0;
+                result = 2;
                 break;
             case "D":
                 result = 1;
                 break;
             case "L":
-                result = 2;
+                result = 0;
                 break;
             default:
                 result = undefined;
