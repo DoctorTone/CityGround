@@ -2,10 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Webpack Tester</title>
+    <title>City Ground Visualisation</title>
 </head>
 <body>
-    <div id="WebGL-output">
+    <div id="mainMenu" class="container text-center">
+        <h1>The City Ground</h1>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm">
+                    <button id="seasons" type="button" class="btn btn-danger">Seasons</button>
+                </div>
+                <div class="col-sm">
+                    <button type="button" class="btn btn-danger">History</button>
+                </div>
+                <div class="col-sm">
+                    <button type="button" class="btn btn-danger">Misc</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="seasonsOption" class="d-none">
+        <h1>Select a season</h1>
+        <div>
+            <button id="season2018" type="button" class="btn btn-danger">2018</button>
+        </div>
+    </div>
+
+    <div id="WebGL-output" class="d-none">
         <div class="title text-center">
             <h1>City Ground</h1>
         </div>

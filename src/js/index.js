@@ -1,17 +1,24 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/cityStyles.css";
 
-//import $ from "jquery";
+import $ from "jquery";
 //window.jQuery = $;
 //window.$ = $;
 import * as THREE from "three";
 import { BaseApp } from "./baseApp";
+import * as SceneConfig from "./sceneConfig";
 //import * as ControlKit from "controlkit";
 let ControlKit = require("controlkit");
 
 class Framework extends BaseApp {
     constructor() {
         super();
+
+        this.appRunning = false;
+    }
+
+    setContainer(container) {
+        this.container = container;
     }
 
     init(container) {
@@ -46,7 +53,9 @@ class Framework extends BaseApp {
 
             let controlKit = new ControlKit();
 
-            controlKit.addPanel({label: "Configuration", width: 200, enable: false})
+            let defaultWidth = 200;
+
+            controlKit.addPanel({label: "Configuration", width: defaultWidth, enable: false})
                 .addSubGroup({label: "Appearance", enable: false})
                 .addColor(appearanceConfig, "Back", {
                     colorMode: "hex", onChange: () => {
@@ -88,16 +97,54 @@ class Framework extends BaseApp {
         let delta = this.clock.getDelta();
         this.elapsedTime += delta;
     }
+
+    hideAllOptions() {
+        //Hide main options on page
+        $("body > div").addClass("d-none");
+    }
+
+    showOption(option) {
+        this.hideAllOptions();
+        $('#'+option).removeClass("d-none");
+    }
+
+    showSeason(season) {
+        this.hideAllOptions();
+        $('#WebGL-output').removeClass("d-none");
+    }
+
+    refresh() {
+        if(!this.appRunning) {
+            if(!this.container) {
+                console.log("No container set!");
+                return;
+            }
+            this.init(this.container);
+            //app.createGUI();
+            this.createScene();
+
+            this.run();
+            this.appRunning = true;
+        }
+    }
 }
 
-//$(document).ready( () => {
+$(document).ready( () => {
 
     let container = document.getElementById("WebGL-output");
     let app = new Framework();
-    app.init(container);
-    app.createGUI();
-    app.createScene();
+    app.setContainer(container);
+
+    //Options
+    $('#seasons').on("click", () => {
+        app.showOption(SceneConfig.SEASONS);
+    });
+
+    $("#season2018").on("click", () => {
+        app.showSeason("season2018");
+        app.refresh();
+    });
 
     app.run();
 
-//});
+});

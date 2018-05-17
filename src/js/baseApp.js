@@ -42,7 +42,7 @@ export class BaseApp {
     createRenderer() {
         this.renderer = new THREE.WebGLRenderer( {antialias : true, alpha: true});
         this.renderer.setClearColor(SceneConfig.clearColour, 1.0);
-        this.renderer.shadowMapEnabled = true;
+        this.renderer.shadowMap.enabled = true;
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.container.appendChild( this.renderer.domElement );

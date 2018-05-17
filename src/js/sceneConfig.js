@@ -11,5 +11,7 @@ const CameraPos = {
 const NEAR_PLANE = 0.1;
 const FAR_PLANE = 10000;
 const FOV = 45;
+//Options
+const SEASONS = "seasonsOption";
 
-export { clearColour, ambientLightColour, pointLightColour, CameraPos, NEAR_PLANE, FAR_PLANE, FOV };
+export { clearColour, ambientLightColour, pointLightColour, CameraPos, NEAR_PLANE, FAR_PLANE, FOV, SEASONS };

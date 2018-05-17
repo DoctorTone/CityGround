@@ -2,6 +2,7 @@
 body {
     margin: 0;
     overflow: hidden;
+    background: #bac6c6;
 }
 #WebGL-output {
     position: relative;
