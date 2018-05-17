@@ -16,6 +16,9 @@ class Framework extends BaseApp {
         super();
 
         this.appRunning = false;
+        this.currentTeam = 0;
+        this.animating = false;
+        this.animationEnded = true;
     }
 
     setContainer(container) {
@@ -37,14 +40,15 @@ class Framework extends BaseApp {
         //Add ground plane
         this.addGround();
 
-        let teamGeom = new THREE.CylinderBufferGeometry(SceneConfig.radius, SceneConfig.radius, SceneConfig.winHeight);
+        let teamGeom = new THREE.CylinderBufferGeometry(SceneConfig.radius, SceneConfig.radius, SceneConfig.winHeight, SceneConfig.segments);
         let teamMats = [new THREE.MeshLambertMaterial({color: SceneConfig.loseColour}),
             new THREE.MeshLambertMaterial({color: SceneConfig.drawColour}),
             new THREE.MeshLambertMaterial({color: SceneConfig.winColour})];
         let teamMesh;
         let teamPosition = SceneConfig.teamStart;
-        let team, result;
-        for(let i=0, numMatches=Data.length; i<numMatches; ++i) {
+        let team, result, teamColumns=[], teamHeights=[];
+        let numTeams = Data.length;
+        for(let i=0; i<numTeams; ++i) {
             team = Data[i];
             result = this.getResult(team);
             if(result === undefined) {
@@ -52,10 +56,16 @@ class Framework extends BaseApp {
                 continue;
             }
             teamMesh = new THREE.Mesh(teamGeom, teamMats[result]);
-            teamMesh.position.set(teamPosition.x, SceneConfig.winHeight/2 - SceneConfig.resultOffset[result], teamPosition.z + (SceneConfig.teamInc * i));
+            teamColumns.push(teamMesh);
+            teamMesh.position.set(teamPosition.x, -SceneConfig.winHeight/2, teamPosition.z + (SceneConfig.teamInc * i));
+            teamHeights.push(SceneConfig.resultOffset[result]);
             this.root.add(teamMesh);
         }
 
+        this.numTeams = numTeams;
+        this.teamColumns = teamColumns;
+        this.teamHeights = teamHeights;
+        this.animating = true;
         //DEBUG
         //console.log("Forest data = ", Data);
     }
@@ -132,7 +142,28 @@ class Framework extends BaseApp {
     update() {
         super.update();
         let delta = this.clock.getDelta();
-        this.elapsedTime += delta;
+
+        //Perform any animation
+        if(this.animating) {
+            if(this.animationEnded) {
+                //Animate next result
+                this.animationEnded = false;
+                if(this.currentTeam >= this.numTeams) {
+                    this.animating = false;
+                }
+            }
+            else {
+                let teamColumn = this.teamColumns[this.currentTeam];
+                let deltaHeight = this.teamHeights[this.currentTeam];
+                let realHeight = -SceneConfig.winHeight/2 + deltaHeight;
+                teamColumn.position.y += delta/SceneConfig.animationTime * deltaHeight;
+                if(teamColumn.position.y >= realHeight) {
+                    teamColumn.position.y = realHeight;
+                    this.animationEnded = true;
+                    ++this.currentTeam;
+                }
+            }
+        }
     }
 
     hideAllOptions() {

@@ -5,9 +5,9 @@ const SceneConfig = {
     ambientLightColour: 0x383838,
     pointLightColour: 0xffffff,
     CameraPos: {
-        x: 230,
-        y: 180,
-        z: 430
+        x: 210,
+        y: 75,
+        z: 340
     },
     LookAtPos: {
         x: 0,
@@ -18,6 +18,7 @@ const SceneConfig = {
     FAR_PLANE: 10000,
     FOV: 45,
     radius: 5,
+    segments: 16,
     winHeight: 45,
     drawHeight: 30,
     loseHeight: 15,
@@ -31,7 +32,8 @@ const SceneConfig = {
     },
     teamInc: 12,
     RESULT: 6,
-    resultOffset: [40, 20, 0],
+    resultOffset: [3, 17.5, 45],
+    animationTime: 0.15,
     //Options
     SEASONS: "seasonsOption"
 };
