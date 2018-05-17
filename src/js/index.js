@@ -38,11 +38,20 @@ class Framework extends BaseApp {
         this.addGround();
 
         let teamGeom = new THREE.CylinderBufferGeometry(SceneConfig.radius, SceneConfig.radius, SceneConfig.winHeight);
-        let teamMats = new THREE.MeshLambertMaterial({color: SceneConfig.winColour});
+        let teamMats = [new THREE.MeshLambertMaterial({color: SceneConfig.winColour}),
+            new THREE.MeshLambertMaterial({color: SceneConfig.drawColour}),
+            new THREE.MeshLambertMaterial({color: SceneConfig.loseColour})];
         let teamMesh;
         let teamPosition = SceneConfig.teamStart;
+        let team, result;
         for(let i=0, numMatches=Data.length; i<numMatches; ++i) {
-            teamMesh = new THREE.Mesh(teamGeom, teamMats);
+            team = Data[i];
+            result = this.getResult(team);
+            if(result === undefined) {
+                console.log("Couldn't get result!");
+                continue;
+            }
+            teamMesh = new THREE.Mesh(teamGeom, teamMats[result]);
             teamMesh.position.set(teamPosition.x, teamPosition.y, teamPosition.z + (SceneConfig.teamInc * i));
             this.root.add(teamMesh);
         }
@@ -51,6 +60,25 @@ class Framework extends BaseApp {
         //console.log("Forest data = ", Data);
     }
 
+    getResult(team) {
+        //Get result from this record
+        let result = team[SceneConfig.RESULT];
+        switch (result) {
+            case "W":
+                result = 0;
+                break;
+            case "D":
+                result = 1;
+                break;
+            case "L":
+                result = 2;
+                break;
+            default:
+                result = undefined;
+        }
+
+        return result;
+    }
     createGUI() {
         //Create GUI - controlKit
         window.addEventListener('load', () => {

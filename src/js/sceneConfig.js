@@ -20,12 +20,15 @@ const SceneConfig = {
     radius: 5,
     winHeight: 15,
     winColour: 0x00ff00,
+    drawColour: 0xffbf00,
+    loseColour: 0xff0000,
     teamStart: {
         x: 0,
         y: 15/2,
         z: -250
     },
     teamInc: 12,
+    RESULT: 6,
     //Options
     SEASONS: "seasonsOption"
 };
