@@ -37,37 +37,47 @@ class Framework extends BaseApp {
         this.root = new THREE.Object3D();
         this.addToScene(this.root);
 
+        //Add model
+        let loader = new THREE.JSONLoader();
+        loader.load("../models/forestLogo.json", (geometry, materials) => {
+
+            let teamGeom = new THREE.CylinderBufferGeometry(SceneConfig.radius, SceneConfig.radius, SceneConfig.winHeight, SceneConfig.segments);
+            let teamMats = [new THREE.MeshLambertMaterial({color: SceneConfig.loseColour}),
+                new THREE.MeshLambertMaterial({color: SceneConfig.drawColour}),
+                new THREE.MeshLambertMaterial({color: SceneConfig.winColour})];
+            let teamMesh, logoMesh;
+            let teamPosition = SceneConfig.teamStart;
+            let team, result, teamColumns=[], teamHeights=[];
+            let numTeams = Data.length;
+            for(let i=0; i<numTeams; ++i) {
+                team = Data[i];
+                result = this.getResult(team);
+                if(result === undefined) {
+                    console.log("Couldn't get result!");
+                    continue;
+                }
+                teamMesh = new THREE.Mesh(teamGeom, teamMats[result]);
+                teamColumns.push(teamMesh);
+                teamMesh.position.set(teamPosition.x, -SceneConfig.winHeight/2, teamPosition.z + (SceneConfig.teamInc * i));
+                teamHeights.push(SceneConfig.resultOffset[result]);
+                this.root.add(teamMesh);
+
+                logoMesh = new THREE.Mesh(geometry, materials);
+                logoMesh.scale.set(SceneConfig.LOGO_SCALE, SceneConfig.LOGO_SCALE, SceneConfig.LOGO_SCALE);
+                logoMesh.rotation.x = Math.PI/2;
+                logoMesh.position.copy(teamMesh.position);
+                logoMesh.position.y = teamHeights[i] + SceneConfig.LOGO_SCALE;
+                this.root.add(logoMesh);
+            }
+
+            this.numTeams = numTeams;
+            this.teamColumns = teamColumns;
+            this.teamHeights = teamHeights;
+            this.animating = true;
+        });
+
         //Add ground plane
         this.addGround();
-
-        let teamGeom = new THREE.CylinderBufferGeometry(SceneConfig.radius, SceneConfig.radius, SceneConfig.winHeight, SceneConfig.segments);
-        let teamMats = [new THREE.MeshLambertMaterial({color: SceneConfig.loseColour}),
-            new THREE.MeshLambertMaterial({color: SceneConfig.drawColour}),
-            new THREE.MeshLambertMaterial({color: SceneConfig.winColour})];
-        let teamMesh;
-        let teamPosition = SceneConfig.teamStart;
-        let team, result, teamColumns=[], teamHeights=[];
-        let numTeams = Data.length;
-        for(let i=0; i<numTeams; ++i) {
-            team = Data[i];
-            result = this.getResult(team);
-            if(result === undefined) {
-                console.log("Couldn't get result!");
-                continue;
-            }
-            teamMesh = new THREE.Mesh(teamGeom, teamMats[result]);
-            teamColumns.push(teamMesh);
-            teamMesh.position.set(teamPosition.x, -SceneConfig.winHeight/2, teamPosition.z + (SceneConfig.teamInc * i));
-            teamHeights.push(SceneConfig.resultOffset[result]);
-            this.root.add(teamMesh);
-        }
-
-        this.numTeams = numTeams;
-        this.teamColumns = teamColumns;
-        this.teamHeights = teamHeights;
-        this.animating = true;
-        //DEBUG
-        //console.log("Forest data = ", Data);
     }
 
     getResult(team) {

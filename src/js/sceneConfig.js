@@ -34,6 +34,7 @@ const SceneConfig = {
     RESULT: 6,
     resultOffset: [3, 17.5, 45],
     animationTime: 0.15,
+    LOGO_SCALE: 5,
     //Options
     SEASONS: "seasonsOption"
 };
