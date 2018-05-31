@@ -13,6 +13,9 @@ body {
     top: 1%;
     left: 0%;
 }
+.infoPanel {
+    position: absolute;
+}
 .info {
     position: absolute;
     width: 5%;
@@ -21,4 +24,8 @@ body {
 }
 .info img {
     width: 100%;
+}
+#gui {
+    top: 20%;
+    right: 0%;
 }
