@@ -12,6 +12,7 @@ export class SpriteManager {
         let spriteMap = new THREE.SpriteMaterial( {map: spriteAttributes.map});
         let logoSprite = new THREE.Sprite(spriteMap);
         logoSprite.name = spriteAttributes.name;
+        logoSprite.position.copy(spriteAttributes.spritePosition);
         logoSprite.scale.copy(spriteAttributes.spriteScale);
         this.sprites.push(logoSprite);
 

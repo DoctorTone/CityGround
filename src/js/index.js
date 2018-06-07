@@ -38,21 +38,29 @@ class Framework extends BaseApp {
         this.root = new THREE.Object3D();
         this.addToScene(this.root);
 
-        //Add sprite
         let textureLoader = new THREE.TextureLoader();
         let logoTexture = textureLoader.load("../images/forest.png");
-        let spriteManager = new SpriteManager();
 
+        //Create results geometry
+        this.createResultsGeometry();
+
+        //Add sprites
+        let spritePosition = new THREE.Vector3(SceneConfig.teamStart.x, SceneConfig.teamStart.y, SceneConfig.teamStart.z);
+        let spriteManager = new SpriteManager();
         let spriteAttributes = {
             map: logoTexture,
             name: "Forest",
+            spritePosition: spritePosition,
             spriteScale: new THREE.Vector3(10, 10, 1)
         };
 
-        let logo = spriteManager.create(spriteAttributes);
-        this.root.add(logo);
-
-        this.createResultsGeometry();
+        let logo;
+        for(let i=0; i<this.numTeams; ++i) {
+            spriteAttributes.spritePosition.y = this.teamHeights[i] + 5;
+            spriteAttributes.spritePosition.z = SceneConfig.teamStart.z + (SceneConfig.teamInc * i);
+            logo = spriteManager.create(spriteAttributes);
+            this.root.add(logo);
+        }
 
         //Add ground plane
         this.addGround();
