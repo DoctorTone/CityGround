@@ -8,6 +8,7 @@ import * as THREE from "three";
 import { BaseApp } from "./baseApp";
 import { SceneConfig } from "./sceneConfig";
 import Data from "../data/forest.json";
+import { SpriteManager } from "./spriteManager";
 
 let ControlKit = require("controlkit");
 
@@ -37,47 +38,53 @@ class Framework extends BaseApp {
         this.root = new THREE.Object3D();
         this.addToScene(this.root);
 
-        //Add model
-        let loader = new THREE.JSONLoader();
-        loader.load("../models/forestLogo.json", (geometry, materials) => {
+        //Add sprite
+        let textureLoader = new THREE.TextureLoader();
+        let logoTexture = textureLoader.load("../images/forest.png");
+        let spriteManager = new SpriteManager();
 
-            let teamGeom = new THREE.CylinderBufferGeometry(SceneConfig.radius, SceneConfig.radius, SceneConfig.winHeight, SceneConfig.segments);
-            let teamMats = [new THREE.MeshLambertMaterial({color: SceneConfig.loseColour}),
-                new THREE.MeshLambertMaterial({color: SceneConfig.drawColour}),
-                new THREE.MeshLambertMaterial({color: SceneConfig.winColour})];
-            let teamMesh, logoMesh;
-            let teamPosition = SceneConfig.teamStart;
-            let team, result, teamColumns=[], teamHeights=[];
-            let numTeams = Data.length;
-            for(let i=0; i<numTeams; ++i) {
-                team = Data[i];
-                result = this.getResult(team);
-                if(result === undefined) {
-                    console.log("Couldn't get result!");
-                    continue;
-                }
-                teamMesh = new THREE.Mesh(teamGeom, teamMats[result]);
-                teamColumns.push(teamMesh);
-                teamMesh.position.set(teamPosition.x, -SceneConfig.winHeight/2, teamPosition.z + (SceneConfig.teamInc * i));
-                teamHeights.push(SceneConfig.resultOffset[result]);
-                this.root.add(teamMesh);
+        let spriteAttributes = {
+            map: logoTexture,
+            name: "Forest",
+            spriteScale: new THREE.Vector3(10, 10, 1)
+        };
 
-                logoMesh = new THREE.Mesh(geometry, materials);
-                logoMesh.scale.set(SceneConfig.LOGO_SCALE, SceneConfig.LOGO_SCALE, SceneConfig.LOGO_SCALE);
-                logoMesh.rotation.x = Math.PI/2;
-                logoMesh.position.copy(teamMesh.position);
-                logoMesh.position.y = teamHeights[i] + SceneConfig.LOGO_SCALE;
-                this.root.add(logoMesh);
-            }
+        let logo = spriteManager.create(spriteAttributes);
+        this.root.add(logo);
 
-            this.numTeams = numTeams;
-            this.teamColumns = teamColumns;
-            this.teamHeights = teamHeights;
-            this.animating = true;
-        });
+        this.createResultsGeometry();
 
         //Add ground plane
         this.addGround();
+    }
+
+    createResultsGeometry() {
+        let teamGeom = new THREE.CylinderBufferGeometry(SceneConfig.radius, SceneConfig.radius, SceneConfig.winHeight, SceneConfig.segments);
+        let teamMats = [new THREE.MeshLambertMaterial({color: SceneConfig.loseColour}),
+            new THREE.MeshLambertMaterial({color: SceneConfig.drawColour}),
+            new THREE.MeshLambertMaterial({color: SceneConfig.winColour})];
+        let teamMesh;
+        let teamPosition = SceneConfig.teamStart;
+        let team, result, teamColumns=[], teamHeights=[];
+        let numTeams = Data.length;
+        for(let i=0; i<numTeams; ++i) {
+            team = Data[i];
+            result = this.getResult(team);
+            if(result === undefined) {
+                console.log("Couldn't get result!");
+                continue;
+            }
+            teamMesh = new THREE.Mesh(teamGeom, teamMats[result]);
+            teamColumns.push(teamMesh);
+            teamMesh.position.set(teamPosition.x, -SceneConfig.winHeight/2, teamPosition.z + (SceneConfig.teamInc * i));
+            teamHeights.push(SceneConfig.resultOffset[result]);
+            this.root.add(teamMesh);
+        }
+
+        this.numTeams = numTeams;
+        this.teamColumns = teamColumns;
+        this.teamHeights = teamHeights;
+        this.animating = true;
     }
 
     getResult(team) {
@@ -140,8 +147,7 @@ class Framework extends BaseApp {
 
     addGround() {
         //Ground plane
-        const GROUND_WIDTH = 1000, GROUND_HEIGHT = 640, SEGMENTS = 16;
-        let groundGeom = new THREE.PlaneBufferGeometry(GROUND_WIDTH, GROUND_HEIGHT, SEGMENTS, SEGMENTS);
+        let groundGeom = new THREE.PlaneBufferGeometry(SceneConfig.GroundWidth, SceneConfig.GroundHeight, SceneConfig.GroundSegments, SceneConfig.GroundSegments);
         let groundMat = new THREE.MeshLambertMaterial({color: 0xcdcdcd});
         let ground = new THREE.Mesh(groundGeom, groundMat);
         ground.name = "Ground";
