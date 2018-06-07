@@ -49,6 +49,10 @@ class Framework extends BaseApp {
         let spriteManager = new SpriteManager();
         let spriteAttributes = {
             map: logoTexture,
+            repeatX: 1,
+            repeatY: 1,
+            offsetX: 0,
+            offsetY: 0,
             name: "Forest",
             spritePosition: spritePosition,
             spriteScale: new THREE.Vector3(10, 10, 1)

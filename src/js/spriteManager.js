@@ -9,6 +9,11 @@ export class SpriteManager {
     }
 
     create(spriteAttributes) {
+        spriteAttributes.map.repeat.x = spriteAttributes.repeatX;
+        spriteAttributes.map.repeat.y = spriteAttributes.repeatY;
+        spriteAttributes.map.offset.x = spriteAttributes.offsetX;
+        spriteAttributes.map.offset.y = spriteAttributes.offsetY;
+
         let spriteMap = new THREE.SpriteMaterial( {map: spriteAttributes.map});
         let logoSprite = new THREE.Sprite(spriteMap);
         logoSprite.name = spriteAttributes.name;
