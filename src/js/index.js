@@ -242,7 +242,13 @@ $(document).ready( () => {
     });
 
     $("#guiOption").on("click", () => {
-        $("#guiTab").addClass("d-none");
-        $("#guiTabExpanded").removeClass("d-none");
+        $("#guiTab").fadeOut( () => {
+            $("#guiTabExpanded").removeClass("d-none");
+        });
+    });
+
+    $("#backColour").on("change", () => {
+        let backColour = $("#backColour").val();
+        app.onBackgroundColourChanged(backColour);
     });
 });
