@@ -251,4 +251,9 @@ $(document).ready( () => {
         let backColour = $("#backColour").val();
         app.onBackgroundColourChanged(backColour);
     });
+
+    $("#groundColour").on("change", () => {
+        let groundColour = $("#groundColour").val();
+        app.onGroundColourChanged(groundColour);
+    });
 });
