@@ -241,4 +241,8 @@ $(document).ready( () => {
         app.refresh();
     });
 
+    $("#guiOption").on("click", () => {
+        $("#guiTab").addClass("d-none");
+        $("#guiTabExpanded").removeClass("d-none");
+    });
 });

@@ -37,13 +37,28 @@
             <img class="img-fluid" src="${require('./src/images/info.png')}">
         </div>
         <div id="gui" class="infoPanel">
-            <div class="guiTab">
-                <button type="button" class="btn btn-dark">Options</button>
+            <div id="guiTab" class="guiTab">
+                <button id="guiOption" type="button" class="btn btn-dark">Options</button>
             </div>
-            <div class="d-none">
-                <p>
-                    Some options here
-                </p>
+            <div id="guiTabExpanded" class="d-none">
+                <div>
+                    <span>Back</span><input type="color">
+                </div>
+                <div>
+                    <span>Ground</span><input type="color">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="guiOptions" id="guiOptionsResults" value="option1" checked>
+                    <label class="form-check-label" for="guiOptionsResults">
+                        Results
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="guiOptions" id="guiOptionsAttend" value="option2">
+                    <label class="form-check-label" for="guiOptionsAttend">
+                        Attendances
+                    </label>
+                </div>
             </div>
         </div>
     </div>
