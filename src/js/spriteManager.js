@@ -19,6 +19,7 @@ export class SpriteManager {
         logoSprite.name = spriteAttributes.name;
         logoSprite.position.copy(spriteAttributes.spritePosition);
         logoSprite.scale.copy(spriteAttributes.spriteScale);
+        logoSprite.visible = spriteAttributes.visibility;
         this.sprites.push(logoSprite);
 
         return logoSprite;
@@ -32,5 +33,14 @@ export class SpriteManager {
         }
 
         return undefined;
+    }
+
+    getSpriteByIndex(index) {
+        if(index < 0 || index >= this.sprites.length) {
+            console.log("Index out of range!");
+            return undefined;
+        }
+
+        return this.sprites[index];
     }
 }

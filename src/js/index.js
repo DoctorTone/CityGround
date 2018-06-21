@@ -18,6 +18,7 @@ class Framework extends BaseApp {
 
         this.appRunning = false;
         this.currentTeam = 0;
+        this.currentLogo = null;
         this.animating = false;
         this.animationEnded = true;
     }
@@ -55,7 +56,8 @@ class Framework extends BaseApp {
             offsetY: 0,
             name: "Forest",
             spritePosition: spritePosition,
-            spriteScale: new THREE.Vector3(10, 10, 1)
+            spriteScale: new THREE.Vector3(10, 10, 1),
+            visibility: false
         };
 
         let logo;
@@ -68,6 +70,7 @@ class Framework extends BaseApp {
 
         //Add ground plane
         this.addGround();
+        this.spriteManager = spriteManager;
     }
 
     createResultsGeometry() {
@@ -188,6 +191,10 @@ class Framework extends BaseApp {
                 if(teamColumn.position.y >= realHeight) {
                     teamColumn.position.y = realHeight;
                     this.animationEnded = true;
+                    this.currentLogo = this.spriteManager.getSpriteByIndex(this.currentTeam);
+                    if(this.currentLogo)  {
+                        this.currentLogo.visible = true;
+                    }
                     ++this.currentTeam;
                 }
             }

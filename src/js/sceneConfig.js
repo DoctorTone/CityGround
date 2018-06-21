@@ -5,14 +5,14 @@ const SceneConfig = {
     ambientLightColour: 0x383838,
     pointLightColour: 0xffffff,
     CameraPos: {
-        x: 210,
-        y: 75,
+        x: 182,
+        y: 50,
         z: 340
     },
     LookAtPos: {
-        x: 0,
-        y: 0,
-        z: 0
+        x: -70,
+        y: -20,
+        z: 40
     },
     NEAR_PLANE: 0.1,
     FAR_PLANE: 10000,
